@@ -1,0 +1,28 @@
+version: '3'
+services:
+
+  api:
+    build: .
+    # container_name: api_drf
+    restart: always
+    ports:
+      - 8000:8000
+    command: >
+      sh -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - postgres
+    volumes:
+      - .:/usr/src/app/
+
+
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - 5432:5432
+    # volumes:
+    #   - postgres_volume:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_NAME=postgres
+  
